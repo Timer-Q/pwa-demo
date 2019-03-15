@@ -1,0 +1,18 @@
+.movie {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  .movie-item {
+    width: 48vw;
+    height: 75vw;
+    &-cover {
+      width: 100%;
+    }
+    &-title {
+      color: #333;
+      font-size: 14px;
+      text-align: center;
+      margin: 0;
+    }
+  }
+}
