@@ -5,7 +5,7 @@ const getInTheaters = () => {
   return new Promise(async function(resolve) {
     const {
       data: { subjects }
-    } = await axios.get("https://api.douban.com/v2/movie/in_theaters");
+    } = await axios.get("https://easy-mock.com/mock/5b20fc50c0f62604c7cefdb9/example/movies");
     resolve(subjects);
 
     // axios
