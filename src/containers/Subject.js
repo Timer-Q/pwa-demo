@@ -5,11 +5,37 @@ import { withRouter } from "react-router-dom";
 function Subject(props) {
   const [detail, setDetail] = useState({ images: [], genres: [], aka: [] });
 
+  const getDataFromCaches = () => {
+    return new Promise((resolve, reject) => {
+      if ("caches" in window) {
+        caches.match("http://localhost:3030/detail").then(match => {
+          if (match) {
+            resolve(match.json());
+          } else {
+            resolve();
+          }
+        });
+      } else {
+        reject();
+      }
+    });
+  };
+
   const getDetail = async () => {
     const { match } = props;
-    const result = await getMovieDetail(match.params.id);
-    console.log(result);
-    setDetail(result);
+    getDataFromCaches()
+      .then(result => {
+        console.log(result);
+        if (result) {
+          setDetail(result);
+        }
+      })
+      .then(async () => {
+        const result = await getMovieDetail(match.params.id);
+        if (result) {
+          setDetail(result);
+        }
+      });
   };
 
   useEffect(() => {

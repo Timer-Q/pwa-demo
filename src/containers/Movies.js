@@ -21,8 +21,6 @@ function Movies(props) {
 
   const handleClick = item => {
     const { history } = props;
-    console.log(history);
-    console.log(item);
     history.push({
       pathname: `/subject/${item.id}`
     });
