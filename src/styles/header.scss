@@ -1,0 +1,13 @@
+.header {
+  height: 8vw;
+  line-height: 8vw;
+  background: #ddd;
+  box-sizing: border-box;
+  position: relative;
+  text-align: center;
+  margin-bottom: 1vw;
+  &-left {
+    float: left;
+    padding: 0 1vw;
+  }
+}

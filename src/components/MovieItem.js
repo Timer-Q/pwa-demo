@@ -2,20 +2,30 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export default function MovieItem(props) {
-  const { data, onClick } = props;
+  const { data, onClick, onTitleClick } = props;
 
-  const handleClick = () => {
+  const handleClick = event => {
+    event.preventDefault();
     onClick();
   };
 
+  const handleTitleClick = event => {
+    event.stopPropagation();
+    onTitleClick();
+  };
+
   return (
-    <div onClick={handleClick} className="movie-item">
-      <img
-        className="movie-item-cover"
-        src={data.images.medium}
-        alt={data.title}
-      />
-      <p className="movie-item-title">{data.title}</p>
+    <div className="movie-item">
+      <div onClick={handleClick}>
+        <img
+          className="movie-item-cover"
+          src={data.images.small}
+          alt={data.title}
+        />
+      </div>
+      <p onClick={handleTitleClick} className="movie-item-title">
+        {data.title}
+      </p>
     </div>
   );
 }
@@ -25,5 +35,6 @@ MovieItem.propTypes = {
 };
 
 MovieItem.defaultProps = {
-  onClick: () => {}
+  onClick: () => {},
+  onTitleClick: () => {}
 };

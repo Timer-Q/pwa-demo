@@ -13,17 +13,17 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 const PUBLICKEY =
   "BL8r5BALDYTeDIbzCS43r22IhdHZsaj1Ads1-9ouLDZSi9yveDlM8VyQdbez-0Qwuo8GhBPG89y1hyUY_5fVdhs";
-const PRIVATEKEY = "LMLDzvDFDICNT6BRKeM8y61bPskU4-GmbZtxM-BE2Ms";
+// const PRIVATEKEY = "LMLDzvDFDICNT6BRKeM8y61bPskU4-GmbZtxM-BE2Ms";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
     .register("./sw.js")
     .then(function(registration) {
-      console.log("Service Worker 注册成功: ", registration);
+      console.log("Service Worker 注册成功");
       return subscribeUserToPush(registration, PUBLICKEY);
     })
     .then(subscription => {
-      console.log("abc: ", subscription);
+      console.log("订阅成功");
     });
 }
 
@@ -32,21 +32,20 @@ function subscribeUserToPush(registration, publicKey) {
     userVisibleOnly: true,
     applicationServerKey: window.urlBase64ToUint8Array(publicKey)
   };
-  return registration.pushManager
-    .subscribe(subscribeOptions)
-    .then(function(pushSubscription) {
-      console.log(
-        "Received PushSubscription: ",
-        JSON.stringify(pushSubscription)
-      );
-      return pushSubscription;
-    });
+  if (registration && registration.pushManager) {
+    return registration.pushManager
+      .subscribe(subscribeOptions)
+      .then(function(pushSubscription) {
+        console.log("Received PushSubscription");
+        return pushSubscription;
+      });
+  }
 }
 
 window.urlBase64ToUint8Array = function(base64String) {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding)
-    .replace(/\-/g, "+")
+    .replace(/\-/g, "+") // eslint-disable-line
     .replace(/_/g, "/");
 
   const rawData = window.atob(base64);
