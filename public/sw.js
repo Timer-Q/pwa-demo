@@ -31,13 +31,15 @@ const apiCacheName = "api-cache-0";
 self.addEventListener("fetch", function(e) {
   // NOTE: `respondWith` 方法旨在包裹代码，这些代码为来自受控页面的request生成自定义的response。
   // 这些代码通过返回一个 Response 、 network error 或者 Fetch的方式resolve。
-
+  const url = new URL(e.request.url);
   const isHTMLDoc =
     e.request.headers.has("accept") &&
     e.request.headers.get("accept").includes("text/html") &&
     (url.pathname.endsWith(".html") || !/\.\w+$/.test(url.pathname));
 
   const request = isHTMLDoc ? new Request("/index.html") : e.request;
+
+  const { request } = e;
 
   e.respondWith(
     caches
@@ -47,7 +49,7 @@ self.addEventListener("fetch", function(e) {
           if (request.url.indexOf("/proxyDetail") >= 0) {
             handleUpdateCache(apiCacheName, e);
           }
-          if (/\s*(\.webp || \.jpg)/.test(request.url)) {
+          if (/\s*(\.webp || \.jpg || \.html)/.test(request.url)) {
             return fetch(new Request(request.url));
           } else {
             return fetch(request);
